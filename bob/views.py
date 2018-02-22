@@ -8,11 +8,15 @@ from .models import Tasks, BobTasks
 
 
 def index(request):
-    oldest = Tasks.objects.order_by('cdate')[:1]
-    task = oldest[0]
+    all_task = Tasks.objects.order_by('cdate')
+    t = all_task[0]
+    all_t = []
+    for t in all_task:
+        all_t.append(dict(current_name=t.name,
+                          current_fields=t.fields.split(",")))
     context = {
-        'name': task.name,
-        'fields': task.fields.split(","),
+        'all_names': list(map(lambda x: x.name, all_task)),
+        'all_t': all_t
     }
     return render(request, 'bob/index.html', context)
 
@@ -28,7 +32,7 @@ def gogo(request, task_name):
     bob_task.save()
     # print(bob_task.id)
     # print(bob_task.para)
-    return HttpResponseRedirect(reverse('bob:index'))
+    return HttpResponseRedirect(reverse('bob:bobtasks', args=(task_name,)))
 
 
 def bobtasks(request, task_name):
