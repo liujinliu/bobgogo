@@ -1,0 +1,12 @@
+<h1>{{ name }}</h1>
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<form action="{% url 'bob:gogo' name %}" method="post">
+{% csrf_token %}
+{% for field in fields %}
+<label for="name">{{ field }}</label>
+    <input type="text" name="{{ field }}" />
+{% endfor %}
+<input type="submit" value="Save" />
+</form>
