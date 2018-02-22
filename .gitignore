@@ -90,3 +90,4 @@ ENV/
 # ctag
 tags
 db.sqlite3
+bob/migrations/
