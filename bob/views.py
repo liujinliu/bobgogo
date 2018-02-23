@@ -9,16 +9,19 @@ from .models import Tasks, BobTasks
 
 def index(request):
     all_task = Tasks.objects.order_by('cdate')
-    t = all_task[0]
-    all_t = []
-    for t in all_task:
-        all_t.append(dict(current_name=t.name,
-                          current_fields=t.fields.split(",")))
-    context = {
-        'all_names': list(map(lambda x: x.name, all_task)),
-        'all_t': all_t
-    }
-    return render(request, 'bob/index.html', context)
+    if len(all_task) > 0:
+        t = all_task[0]
+        all_t = []
+        for t in all_task:
+            all_t.append(dict(current_name=t.name,
+                              current_fields=t.fields.split(",")))
+        context = {
+            'all_names': list(map(lambda x: x.name, all_task)),
+            'all_t': all_t
+        }
+        return render(request, 'bob/index.html', context)
+    else:
+        return HttpResponse("No Task found, first add a task via admin page")
 
 
 def gogo(request, task_name):
