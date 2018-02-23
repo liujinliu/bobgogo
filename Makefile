@@ -12,4 +12,7 @@ build: clean
 install: build
 	pip install dist/*.whl -U
 
-.PHONY : all clean build install
+uninstall:
+	pip uninstall -y django-bobgogo
+
+.PHONY : all clean build install uninstall
