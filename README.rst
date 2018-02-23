@@ -16,7 +16,7 @@ Quick start
     make build
     make install
 
-1. Add "bob" to your INSTALLED_APPS setting like this
+2. Add "bob" to your INSTALLED_APPS setting like this
 
 ::
 
@@ -25,15 +25,15 @@ Quick start
         'bob',
     ]
 
-2. Include the URLconf in your project urls.py like this
+3. Include the URLconf in your project urls.py like this
    
 ::
 
     path('bob/', include('bob.urls')),
 
-3. Run `python manage.py migrate` to create the models.
+4. Run `python manage.py migrate` to create the models.
 
-4. Start the development server and visit http://127.0.0.1:8000/admin/
+5. Start the development server and visit http://127.0.0.1:8000/admin/
    to create a task (you'll need the Admin app enabled).
 
-5. Visit http://127.0.0.1:8000/bob/ and you can see what happened.
+6. Visit http://127.0.0.1:8000/bob/ and you can see what happened.
