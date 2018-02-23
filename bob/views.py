@@ -30,14 +30,10 @@ def gogo(request, task_name):
     bob_task = BobTasks(name=task_name, cdate=timezone.now(),
                         udate=timezone.now(), para=json.dumps(paras))
     bob_task.save()
-    # print(bob_task.id)
-    # print(bob_task.para)
     return HttpResponseRedirect(reverse('bob:bobtasks', args=(task_name,)))
 
 
 def bobtasks(request, task_name):
     bobtask = get_list_or_404(BobTasks, name=task_name)
-    print(bobtask[0].para)
-    print(bobtask[0].status)
     context = {'name': task_name, 'tasks': bobtask}
     return render(request, 'bob/bobtask.html', context)
