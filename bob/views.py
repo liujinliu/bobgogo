@@ -4,6 +4,7 @@ from django.shortcuts import render, get_object_or_404, get_list_or_404 # NOQA
 from django.template import loader # NOQA
 from django.urls import reverse
 from django.utils import timezone
+from django.views.decorators.csrf import csrf_exempt
 from .models import Tasks, BobTasks
 
 
@@ -40,3 +41,29 @@ def bobtasks(request, task_name):
     bobtask = get_list_or_404(BobTasks, name=task_name)
     context = {'name': task_name, 'tasks': bobtask}
     return render(request, 'bob/bobtask.html', context)
+
+
+def bobtasks_plaintext(request, task_name, status):
+    bobtask = get_list_or_404(BobTasks, name=task_name, status=status)
+    if not bobtask:
+        return HttpResponse("no task found")
+    ret = []
+    for t in bobtask:
+        para = json.loads(t.para)
+        ret.append(dict(id=t.id, para=para))
+    return HttpResponse(json.dumps(ret))
+
+
+@csrf_exempt
+def bobtasks_update(request, task_name, id):
+    if not request.POST.get("status"):
+        return HttpResponse("Error, need status")
+    bobtask = get_object_or_404(BobTasks, name=task_name, id=id)
+    if bobtask:
+        status = request.POST['status']
+        bobtask.status = int(status)
+        bobtask.save()
+        return HttpResponse("set task:{task_name},id:{id} status to {status}".format(
+                            task_name=task_name, id=id, status=status))
+    else:
+        return HttpResponse("unkonw id")
