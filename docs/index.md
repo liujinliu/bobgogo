@@ -49,7 +49,7 @@ python manage.py createsuperuser
 ```
 python manage.py runserver
 ```
-打开http://127.0.0.1:8000/bob可以看到如下的页面:  
+打开http://127.0.0.1:8000/bob, 可以看到如下的页面:  
 ![](https://github.com/liujinliu/bobgogo/raw/master/docs/imgs/first_start.png)  
 哈哈, 部署成功! 下面我们来看如何使用.  
 
