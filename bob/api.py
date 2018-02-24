@@ -25,13 +25,14 @@ class BobBox(object):
         else:
             return None
 
-    def query_update(self, task_name):
+    def query_update(self, task_name, update=False):
         tasks = self.fetch_task(task_name, 0)
         if tasks:
             tmp = json.loads(tasks)
             for t in tmp:
                 yield t["para"]
-                self.update_task(task_name, t["id"], 1)
+                if update:
+                    self.update_task(task_name, t["id"], 1)
 
 
 if __name__ == "__main__":

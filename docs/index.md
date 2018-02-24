@@ -69,4 +69,22 @@ task由开发人员来创建, 首先打开admin页面:
 ![](https://github.com/liujinliu/bobgogo/raw/master/docs/imgs/bobtasks.png)  
 可以重复上面的步骤, 在foo下创建多个任务记录.
 ![](https://github.com/liujinliu/bobgogo/raw/master/docs/imgs/bobtask2.png)  
-未完待续......
+
+### 编程接口的使用
+参考下面的例子:
+```
+from bob.api import BobBox
+
+b = BobBox("127.0.0.1", 8000)
+
+# update参数为True时, 在每次处理之后, 这一条task数据的status会自动更新为1, 那么下一次调用
+# query_update这个迭代器则已经处理过的这一条不会再返回
+# 如果想自己手动更新的话, 这里传成False, 默认为False
+for para in b.query_update("foo", update=False):
+    print(para) # do something to the task
+```
+运行后得到结果如下:
+```
+{'bar0': 'I', 'bar1': 'love', 'bar2': 'anan'}
+{'bar0': 'everyone', 'bar1': 'love', 'bar2': 'bob'}
+```
