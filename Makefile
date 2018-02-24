@@ -7,7 +7,8 @@ clean:
 	rm -fr *.egg-info
 
 build: clean
-	python setup.py build_py bdist_wheel
+	python setup.py sdist --formats=zip bdist_wheel --universal
+	cp -R docs build/
 
 install: build
 	pip install dist/*.whl -U
