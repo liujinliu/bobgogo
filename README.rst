@@ -3,6 +3,7 @@ bobgogo
 bobgogo is a simple Django app to record tasks for you.  
 You can create task with diffrent paras via admin page.  
 Then users can commit task through the custom page.  
+[online documention](https://github.com/liujinliu/bobgogo/blob/master/docs/index.md)
 
 Quick start
 ~~~~~~~~~~~~~~~
