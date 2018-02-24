@@ -6,6 +6,7 @@ Then users can commit task through the custom page.
 
 Quick start
 ~~~~~~~~~~~~~~~
+
 1. Install
 
 ::
@@ -26,7 +27,7 @@ Quick start
     ]
 
 3. Include the URLconf in your project urls.py like this
-   
+
 ::
 
     path('bob/', include('bob.urls')),
