@@ -19,14 +19,17 @@
 <div id="myTabContent" class="tab-content">
  {% for t in all_t %}  
 	<div class="tab-pane fade" id="{{ t.current_name }}">
-     <form action="{% url 'bob:gogo' t.current_name %}" method="post">
+    <form action="{% url 'bob:gogo' t.current_name %}" method="post" 
+          enctype="multipart/form-data" accept-charset="utf-8">
      {% csrf_token %}
      {% for field in t.current_fields %}
-     <label for="name">{{ field }}</label>
-         <input type="text" name="{{ field }}" />
+        <label for="name">{{ field }}</label>
+        <input type="text" name="{{ field }}" />
      {% endfor %}
-     <input type="submit" value="Save" />
-</form>	</div>
+        <input type="file" name="input-file">  
+        <input type="submit" value="Save" />
+     </form>
+  </div>
  {% endfor %}
 </div>
 

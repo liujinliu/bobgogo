@@ -30,7 +30,7 @@ class BobBox(object):
         if tasks:
             tmp = json.loads(tasks)
             for t in tmp:
-                yield t["para"]
+                yield dict(para=t["para"], input_file=t["input_file"])
                 if update:
                     self.update_task(task_name, t["id"], 1)
 

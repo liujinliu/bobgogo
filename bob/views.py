@@ -6,6 +6,7 @@ from django.urls import reverse
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from .models import Tasks, BobTasks
+from .utils import handle_upload_file
 
 
 def index(request):
@@ -31,8 +32,14 @@ def gogo(request, task_name):
     paras = {}
     for field in fields:
         paras[field] = request.POST[field]
+    input_file = ""
+    filekey = 'input-file'
+    if request.FILES.get(filekey) and str(request.FILES[filekey]):
+        input_file = handle_upload_file(request.FILES[filekey], task_name,
+                                        str(request.FILES[filekey]))
     bob_task = BobTasks(name=task_name, cdate=timezone.now(),
-                        udate=timezone.now(), para=json.dumps(paras))
+                        udate=timezone.now(), para=json.dumps(paras),
+                        input_file=input_file, output_file="", output="")
     bob_task.save()
     return HttpResponseRedirect(reverse('bob:bobtasks', args=(task_name,)))
 
@@ -50,7 +57,8 @@ def bobtasks_plaintext(request, task_name, status):
     ret = []
     for t in bobtask:
         para = json.loads(t.para)
-        ret.append(dict(id=t.id, para=para))
+        input_file = t.input_file
+        ret.append(dict(id=t.id, para=para, input_file=input_file))
     return HttpResponse(json.dumps(ret))
 
 
