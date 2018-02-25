@@ -76,7 +76,7 @@ def bobtasks_update(request, task_name, id):
         bobtask.output = request.POST.get('output', '')
         output_file_fullpath = request.POST.get('output_file', '')
         filename = os.path.basename(output_file_fullpath)
-        target_path = "./%s/output/"
+        target_path = "./%s/output/" % task_name
         if not os.path.exists(target_path):
             os.makedirs(target_path)
         shutil.copy(output_file_fullpath, target_path + filename)
