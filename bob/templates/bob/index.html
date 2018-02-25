@@ -28,7 +28,8 @@
      {% endfor %}
         <input type="file" name="input-file">  
         <input type="submit" value="Save" />
-     </form>
+    </form>
+    <a href="{% url 'bob:bobtasks' t.current_name %}">view tasks</a>
   </div>
  {% endfor %}
 </div>

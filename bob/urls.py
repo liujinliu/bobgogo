@@ -11,4 +11,6 @@ urlpatterns = [
          views.bobtasks_plaintext, name='bobtasks_plaintext'),
     path('<str:task_name>/bobtasks/<int:id>/',
          views.bobtasks_update, name='bobtasks_update'),
+    path('fileload/<str:task_name>/<str:in_out>/<str:filename>/',
+         views.file_download, name='file_download'),
 ]

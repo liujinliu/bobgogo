@@ -16,8 +16,8 @@ class BobBox(object):
         else:
             return None
 
-    def update_task(self, task_name, id, status):
-        para = {'status': 1}
+    def update_task(self, task_name, id, status, output="", output_file=""):
+        para = dict(status=status, output=output, output_file=output_file)
         ret = requests.post("http://%s:%d/bob/%s/bobtasks/%d/"
                             % (self.host, self.port, task_name, id), para)
         if ret.status_code == 200:
@@ -30,7 +30,8 @@ class BobBox(object):
         if tasks:
             tmp = json.loads(tasks)
             for t in tmp:
-                yield dict(para=t["para"], input_file=t["input_file"])
+                yield dict(id=t["id"], para=t["para"],
+                           input_file=t["input_file"])
                 if update:
                     self.update_task(task_name, t["id"], 1)
 

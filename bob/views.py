@@ -1,10 +1,13 @@
 import json
+import shutil
+import os
 from django.http import HttpResponse, HttpResponseRedirect # NOQA
 from django.shortcuts import render, get_object_or_404, get_list_or_404 # NOQA
 from django.template import loader # NOQA
 from django.urls import reverse
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
+from django.http import StreamingHttpResponse
 from .models import Tasks, BobTasks
 from .utils import handle_upload_file
 
@@ -68,10 +71,36 @@ def bobtasks_update(request, task_name, id):
         return HttpResponse("Error, need status")
     bobtask = get_object_or_404(BobTasks, name=task_name, id=id)
     if bobtask:
-        status = request.POST['status']
+        status = request.POST.get('status', 0)
         bobtask.status = int(status)
+        bobtask.output = request.POST.get('output', '')
+        output_file_fullpath = request.POST.get('output_file', '')
+        filename = os.path.basename(output_file_fullpath)
+        target_path = "./%s/output/"
+        if not os.path.exists(target_path):
+            os.makedirs(target_path)
+        shutil.copy(output_file_fullpath, target_path + filename)
+        bobtask.output_file = filename
         bobtask.save()
-        return HttpResponse("set task:{task_name},id:{id} status to {status}".format(
-                            task_name=task_name, id=id, status=status))
+        return HttpResponse(("set task:{task_name},id:{id} status to {status}"
+                             "output:{output}, output_file:{output_file}").format(
+                            task_name=task_name, id=id, status=status,
+                            output=bobtask.output, output_file=bobtask.output_file))
     else:
         return HttpResponse("unkonw id")
+
+
+def file_download(request, task_name, in_out, filename):
+    def file_iterator(file_name, chunk_size=512):
+        with open(file_name) as f:
+            while True:
+                c = f.read(chunk_size)
+                if c:
+                    yield c
+                else:
+                    break
+    the_file_name = './%s/%s/%s' % (task_name, in_out, filename)
+    response = StreamingHttpResponse(file_iterator(the_file_name))
+    response['Content-Type'] = 'application/octet-stream'
+    response['Content-Disposition'] = 'attachment;filename="{0}"'.format(filename)
+    return response
