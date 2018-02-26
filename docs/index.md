@@ -85,6 +85,9 @@ for para in b.query_update("foo", update=False):
 ```
 运行后得到结果如下:
 ```
-{'bar0': 'I', 'bar1': 'love', 'bar2': 'anan'}
-{'bar0': 'everyone', 'bar1': 'love', 'bar2': 'bob'}
+{'para': {'bar2': 'anan', 'bar1': 'love', 'bar0': 'I'}, 'id': 1, 'input_file': '/home/liujinliu/code/mygithub/bobgogo/mysite/foo/input/ejabberd.yml'}
+{'para': {'bar2': 'bob', 'bar1': 'love', 'bar0': 'everyone'}, 'id': 2, 'input_file': '/home/liujinliu/code/mygithub/bobgogo/mysite/foo/input/test.html'}
 ```
+再次打开任务视图,可以看到:  
+![](https://github.com/liujinliu/bobgogo/raw/master/docs/imgs/after_api.png)  
+输出文件可以下载
