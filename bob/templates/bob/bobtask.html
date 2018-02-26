@@ -28,7 +28,11 @@
          <td>{{ task.status }}</td>
          <td>{{ task.udate }}</td>
          <td>{{ task.input_file }}</td>
-         <td><a href="{% url 'bob:file_download' name 'output' task.output_file %}">{{ task.output_file }}</a></td>
+         {% if task.output_file %}
+            <td><a href="{% url 'bob:file_download' name 'output' task.output_file %}">{{ task.output_file }}</a></td>
+         {% else %}
+            <td>{{ task.output_file }}</td>
+         {% endif %}
          <td>{{ task.output }}</td>
       </tr>
    {% endfor %}
