@@ -81,7 +81,8 @@ b = BobBox("127.0.0.1", 8000)
 # query_update这个迭代器则已经处理过的这一条不会再返回
 # 如果想自己手动更新的话, 这里传成False, 默认为False
 for para in b.query_update("foo", update=False):
-    print(para) # do something to the task
+    print(para)
+    b.update_task("foo", para['id'], 0, 0, "/home/liujinliu/bot.csv")
 ```
 运行后得到结果如下:
 ```
