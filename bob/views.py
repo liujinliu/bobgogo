@@ -14,6 +14,7 @@ from .models import Tasks, BobTasks
 from .utils import handle_upload_file
 
 
+@login_required
 def file_download(request, task_name, in_out, filename):
     def file_iterator(file_name, chunk_size=512):
         with open(file_name) as f:
@@ -45,22 +46,22 @@ class LoginView(View):
         return HttpResponseRedirect(reverse('bob:login',))
 
 
-@login_required
-def index(request):
-    all_task = Tasks.objects.order_by('cdate')
-    if len(all_task) > 0:
-        t = all_task[0]
-        all_t = []
-        for t in all_task:
-            all_t.append(dict(current_name=t.name,
-                              current_fields=t.fields.split(",")))
-        context = {
-            'all_names': list(map(lambda x: x.name, all_task)),
-            'all_t': all_t
-        }
-        return render(request, 'bob/index.html', context)
-    else:
-        return HttpResponse("No Task found, first add a task via admin page")
+class IndexView(View):
+    def get(self, request):
+        all_task = Tasks.objects.order_by('cdate')
+        if len(all_task) > 0:
+            t = all_task[0]
+            all_t = []
+            for t in all_task:
+                all_t.append(dict(current_name=t.name,
+                                  current_fields=t.fields.split(",")))
+            context = {
+                'all_names': list(map(lambda x: x.name, all_task)),
+                'all_t': all_t
+            }
+            return render(request, 'bob/index.html', context)
+        else:
+            return HttpResponse("No Task found, first add a task via admin page")
 
 
 class GogoView(View):
