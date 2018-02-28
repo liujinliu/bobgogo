@@ -1,6 +1,7 @@
 import json
 import shutil
 import os
+import copy
 from django.http import HttpResponse, HttpResponseRedirect # NOQA
 from django.shortcuts import render, get_object_or_404, get_list_or_404 # NOQA
 from django.template import loader # NOQA
@@ -88,7 +89,10 @@ class BobTaskView(View):
 
     def get(self, request, task_name):
         bobtask = get_list_or_404(BobTasks, name=task_name)
-        context = {'name': task_name, 'tasks': bobtask}
+        cp_bobtasks = copy.deepcopy(bobtask)
+        for t in cp_bobtasks:
+            t.input_file = os.path.basename(t.input_file)
+        context = {'name': task_name, 'tasks': cp_bobtasks}
         return render(request, 'bob/bobtask.html', context)
 
 
