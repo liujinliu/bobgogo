@@ -27,13 +27,19 @@ Quick start
         'bob',
     ]
 
-3. Include the URLconf in your project urls.py like this
+3. modify the login url in setting
+
+::
+
+    LOGIN_URL = '/bob/'
+
+4. Include the URLconf in your project urls.py like this
 
 ::
 
     path('bob/', include('bob.urls')),
 
-4. Run `python manage.py migrate` to create the models.
+5. Run `python manage.py migrate` to create the models.
 
 5. Start the development server and visit http://127.0.0.1:8000/admin/
    to create a task (you'll need the Admin app enabled).

@@ -4,7 +4,8 @@ from . import views
 
 app_name = 'bob'
 urlpatterns = [
-    path('', views.IndexView.as_view(), name='index'),
+    path('', views.LoginView.as_view(), name='login'),
+    path('index', views.index, name='index'),
     path('<str:task_name>/gogo/', views.GogoView.as_view(), name='gogo'),
     path('<str:task_name>/bobtasks/', views.BobTaskView.as_view(), name='bobtasks'),
     path('<str:task_name>/bobtasks/plain/<int:status>/',

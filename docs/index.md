@@ -29,6 +29,8 @@ INSTALLED_APPS = [
     'bob',
     .......,
 ]
+
+LOGIN_URL = '/bob/'
 ```
 在urls.py中加入如下内容:  
 ```

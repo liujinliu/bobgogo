@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<html>
+<head>
+     <title>登录</title>
+     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+     <link rel="stylesheet" type="text/css" href="static/css/bootstrap.min.css"/>
+</head>
+<body>
+     <h1 class="page-header">登 录</h1>
+     <form action="{% url 'bob:login' %}" method="post" class="form-horizontal">
+     {% csrf_token %}
+        <div class="form-group" >
+           <div class="col-sm-5">
+              <input type="text" class="form-control" placeholder="请输入用户名" name="username"/>
+           </div>
+        </div>
+        <div class="form-group" >
+           <div class="col-sm-5">
+              <input type="password" class="form-control" placeholder="请输入密码" name="password"/>
+           </div>
+        </div>
+        <div class="form-group" >
+           <div class="col-sm-5">
+              <button class="btn-primary">登 录</button>
+           </div>
+        </div>
+     </form>
+</body>
+</html>
