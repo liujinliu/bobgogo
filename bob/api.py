@@ -1,8 +1,8 @@
-import requests
 import json
+import requests
 
 
-class BobBox(object):
+class BobBox:
 
     def __init__(self, host="127.0.0.1", port=8000):
         self.host = host
@@ -13,27 +13,24 @@ class BobBox(object):
                            % (self.host, self.port, task_name, status))
         if ret.status_code == 200:
             return ret.text
-        else:
-            return None
+        return None
 
-    def update_task(self, task_name, id, status, output="", output_file=""):
-        para = dict(status=status, output=output, output_file=output_file)
+    def update_task(self, task_name, _id, status, output="", output_file=""):
         ret = requests.post("http://%s:%d/bob/%s/bobtasks/%d/"
-                            % (self.host, self.port, task_name, id), para)
+                            % (self.host, self.port, task_name, _id),
+                            dict(status=status, output=output, output_file=output_file))
         if ret.status_code == 200:
             return ret.text
-        else:
-            return None
+        return None
 
     def query_update(self, task_name, update=False):
         tasks = self.fetch_task(task_name, 0)
         if tasks:
-            tmp = json.loads(tasks)
-            for t in tmp:
-                yield dict(id=t["id"], para=t["para"],
-                           input_file=t["input_file"])
+            for tk in json.loads(tasks):
+                yield dict(id=tk["id"], para=tk["para"],
+                           input_file=tk["input_file"])
                 if update:
-                    self.update_task(task_name, t["id"], 1)
+                    self.update_task(task_name, tk["id"], 1)
 
 
 if __name__ == "__main__":

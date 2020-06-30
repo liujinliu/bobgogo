@@ -4,6 +4,7 @@ import os
 import copy
 from django.http import HttpResponse, HttpResponseRedirect # NOQA
 from django.shortcuts import render, get_object_or_404, get_list_or_404 # NOQA
+# pylint: disable=unused-import
 from django.template import loader # NOQA
 from django.urls import reverse
 from django.utils import timezone
@@ -49,6 +50,7 @@ class LoginView(View):
 
 class IndexView(View):
     def get(self, request):
+        # pylint: disable=no-member
         all_task = Tasks.objects.order_by('cdate')
         if len(all_task) > 0:
             t = all_task[0]
@@ -61,8 +63,7 @@ class IndexView(View):
                 'all_t': all_t
             }
             return render(request, 'bob/index.html', context)
-        else:
-            return HttpResponse("No Task found, first add a task via admin page")
+        return HttpResponse("No Task found, first add a task via admin page")
 
 
 class GogoView(View):
@@ -112,10 +113,10 @@ class BobTaskPlainView(View):
 
 class BobTaskUpdateView(View):
 
-    def post(self, request, task_name, id):
+    def post(self, request, task_name, _id):
         if not request.POST.get("status"):
             return HttpResponse("Error, need status")
-        bobtask = get_object_or_404(BobTasks, name=task_name, id=id)
+        bobtask = get_object_or_404(BobTasks, name=task_name, id=_id)
         if bobtask:
             status = request.POST.get('status', 0)
             bobtask.status = int(status)
@@ -128,9 +129,6 @@ class BobTaskUpdateView(View):
             shutil.copy(output_file_fullpath, target_path + filename)
             bobtask.output_file = filename
             bobtask.save()
-            return HttpResponse(("set task:{task_name},id:{id} status to {status}"
-                                 "output:{output}, output_file:{output_file}").format(
-                                task_name=task_name, id=id, status=status,
-                                output=bobtask.output, output_file=bobtask.output_file))
-        else:
-            return HttpResponse("unkonw id")
+            return HttpResponse((f"set task:{task_name},id:{_id} status to {status}"
+                                 f"output:{bobtask.output}, output_file:{bobtask.output_file}"))
+        return HttpResponse("unkonw id")
