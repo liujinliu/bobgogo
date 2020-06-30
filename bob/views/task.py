@@ -2,68 +2,13 @@ import json
 import shutil
 import os
 import copy
-from django.http import HttpResponse, HttpResponseRedirect # NOQA
-from django.shortcuts import render, get_object_or_404, get_list_or_404 # NOQA
-# pylint: disable=unused-import
-from django.template import loader # NOQA
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.urls import reverse
 from django.utils import timezone
-from django.http import StreamingHttpResponse
-from django.contrib.auth import authenticate, login
 from django.views import View
-from django.contrib.auth.decorators import login_required # NOQA
-from .models import Tasks, BobTasks
-from .utils import handle_upload_file
-
-
-@login_required
-def file_download(request, task_name, in_out, filename):
-    def file_iterator(file_name, chunk_size=512):
-        with open(file_name) as f:
-            while True:
-                c = f.read(chunk_size)
-                if c:
-                    yield c
-                else:
-                    break
-    the_file_name = './%s/%s/%s' % (task_name, in_out, filename)
-    response = StreamingHttpResponse(file_iterator(the_file_name))
-    response['Content-Type'] = 'application/octet-stream'
-    response['Content-Disposition'] = 'attachment;filename="{0}"'.format(filename)
-    return response
-
-
-class LoginView(View):
-
-    def get(self, request):
-        return render(request, 'bob/login.html')
-
-    def post(self, request):
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(username=username, password=password)
-        if user is not None:
-            login(request, user)
-            return HttpResponseRedirect(reverse('bob:index',))
-        return HttpResponseRedirect(reverse('bob:login',))
-
-
-class IndexView(View):
-    def get(self, request):
-        # pylint: disable=no-member
-        all_task = Tasks.objects.order_by('cdate')
-        if len(all_task) > 0:
-            t = all_task[0]
-            all_t = []
-            for t in all_task:
-                all_t.append(dict(current_name=t.name,
-                                  current_fields=t.fields.split(",")))
-            context = {
-                'all_names': list(map(lambda x: x.name, all_task)),
-                'all_t': all_t
-            }
-            return render(request, 'bob/index.html', context)
-        return HttpResponse("No Task found, first add a task via admin page")
+from bob.models import Tasks, BobTasks
+from bob.utils import handle_upload_file
 
 
 class GogoView(View):
