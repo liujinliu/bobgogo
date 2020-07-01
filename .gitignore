@@ -92,3 +92,4 @@ tags
 db.sqlite3
 bob/migrations/
 .idea/
+.vscode/

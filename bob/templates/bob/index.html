@@ -15,8 +15,7 @@
 </ul>
 
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-
-<div id="myTabContent" class="tab-content">
+<div id="myTabContent" style="padding: 100px 100px 10px;">
  {% for t in all_t %}  
 	<div class="tab-pane fade" id="{{ t.current_name }}">
     <form action="{% url 'bob:gogo' t.current_name %}" method="post" 
@@ -28,11 +27,13 @@
         <input type="text" name="{{ field }}" />
       </div>
       {% endfor %}
-      <div class="form-group">
-        <input type="file" name="input-file">  
-        <input type="submit" value="Save" />
+      <div class="input-group">
+        <input type="file" name="input-file" class="form-control">
       </div>
+      <br>
+      <button type="submit" class="btn btn-primary">保存</button>
     </form>
+    <br>
     <a href="{% url 'bob:bobtasks' t.current_name %}">view tasks</a>
   </div>
  {% endfor %}
